@@ -4,10 +4,25 @@
         data-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-    <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
     <ul class="navbar-nav px-3">
-        <li class="nav-item text-nowrap">
-            <a class="nav-link" href="#">Sign out</a>
-        </li>
+        @if(Session::get('user'))
+                <ul class="navbar-nav">
+                    <li class="nav-item text-nowrap">
+                        <a class="nav-link" href="#">{{ Session::get('user') }}</a>
+                    </li>
+                    <li class="nav-item text-nowrap">
+                        <a class="nav-link" href="signout">Sign out</a>
+                    </li>
+                </ul>
+        @else
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="login">Login</span></a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="register">Register</span></a>
+                </li>
+            </ul>
+        @endif
     </ul>
 </nav>

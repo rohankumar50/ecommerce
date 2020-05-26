@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Order extends Model
 {
     //
+    protected $guarded = [];
+
     use SoftDeletes;
     protected $date=['deleted_at'];
 }

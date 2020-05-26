@@ -1,24 +1,27 @@
-<?php
-
+<?php use Illuminate\Contracts\Session\Session;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
-Route::view('/', 'welcome');
-Route::view('login','auth/login');
-Route::view('register','auth/register');
-Route::view('admin','admin/dashboard');
+Route::group(['middleware'=>['customAuth']], function() {
+        Route::view('admin', 'admin/dashboard');
 
+        Route::view('/', 'welcome');
 
+        Route::get('signout', function (Request $request) {
+                $request->session()->flush();
+                return redirect('http://localhost/myecommerce/public/');
+            }
+
+        );
+        Route::view('login', 'auth/login');
+        Route::post('loginController', 'Auth\LoginController@index');
+
+        //register route---------
+        Route::view('register', 'auth/register');
+        Route::post('registerController', 'Auth\RegisterController@index')->name('register');
+        //--------------------------
+    }
+
+);
