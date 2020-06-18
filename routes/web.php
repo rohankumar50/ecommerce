@@ -4,8 +4,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 
-Route::group(['middleware'=>['customAuth']], function() {
-        Route::view('admin', 'admin/dashboard');
+Route::group(['middleware'=>['customAuth']], function()
+    {
 
         Route::view('/', 'welcome');
 
@@ -22,6 +22,20 @@ Route::group(['middleware'=>['customAuth']], function() {
         Route::view('register', 'auth/register');
         Route::post('registerController', 'Auth\RegisterController@index')->name('register');
         //--------------------------
+        // Route::resource('product', 'ProductController');
+        // Route::resource('category', 'CategoryController');
+        Route::view('admin', 'admin/dashboard');
+
+        Route::group(['prefix' => 'admin'], function () {
+            Route::resource('product', 'ProductController');
+            Route::resource('category', 'CategoryController');
+
+            //add category---------------
+            Route::get('categorybtn','CategoryController@storedata');
+            Route::post('addCategory', 'CategoryController@senddata');
+
+        });
+
     }
 
 );

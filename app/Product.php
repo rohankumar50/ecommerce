@@ -9,7 +9,10 @@ class Product extends Model
 {
     //
     protected $guarded = [];
-
     use SoftDeletes;
     protected $date=['deleted_at'];
+
+    public function category(){
+        return $this->belongsToMany('App\Category');
+    }
 }

@@ -4,6 +4,7 @@ use App\Profile;
 use App\Role;
 use App\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Crypt;
 
 class AdminUser extends Seeder
 {
@@ -24,7 +25,7 @@ class AdminUser extends Seeder
         ]);
         $user = User::create([
             'email'=> 'user@email.com',
-            'password'=> bcrypt('secret'),
+            'password'=> Crypt::encrypt(('secret')),
             'role_id'=>$role->id,
         ]);
         $role = Profile::create([

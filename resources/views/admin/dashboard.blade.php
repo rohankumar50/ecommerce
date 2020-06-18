@@ -1,17 +1,15 @@
-@extends('layouts/app')
-
-@section('admin_css')
-<link rel="stylesheet" href="css/admin.css">
-@endsection
-
 @include('partials/navbar')
+@include('partials/sidebar')
 
+@extends('layouts/app')
+@section('admin_css')
+<link rel="stylesheet" href="{{ asset('asset/css/admin.css') }}">
+@endsection
 @section('content')
 <div class="container-fluid">
     <div class="row">
-        @include('partials/sidebar')
-        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 ">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center border-bottom mb-3">
                 <h1 class="h2">Dashboard</h1>
                 <div class="btn-toolbar mb-2 mb-md-0">
                     <div class="btn-group mr-2">
@@ -24,6 +22,11 @@
                     </button>
                 </div>
             </div>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+                </ol>
+            </nav>
             <h2>Section title</h2>
             <div class="table-responsive">
                 <table class="table table-striped table-sm table-bordered">
