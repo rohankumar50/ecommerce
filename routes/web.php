@@ -13,26 +13,31 @@ Route::group(['middleware'=>['customAuth']], function()
                 $request->session()->flush();
                 return redirect('http://localhost/myecommerce/public/');
             }
-
         );
+
         Route::view('login', 'auth/login');
         Route::post('loginController', 'Auth\LoginController@index');
 
         //register route---------
         Route::view('register', 'auth/register');
         Route::post('registerController', 'Auth\RegisterController@index')->name('register');
-        //--------------------------
-        // Route::resource('product', 'ProductController');
-        // Route::resource('category', 'CategoryController');
         Route::view('admin', 'admin/dashboard');
 
         Route::group(['prefix' => 'admin'], function () {
-            Route::resource('product', 'ProductController');
-            Route::resource('category', 'CategoryController');
 
             //add category---------------
+            Route::post('trash/{category}','CategoryController@trash')->name('trash');
             Route::get('categorybtn','CategoryController@storedata');
             Route::post('addCategory', 'CategoryController@senddata');
+            Route::get('categoryTrash','CategoryController@categoryTrash')->name('categoryTrash');
+            Route::post('restore/{category}','CategoryController@restore')->name('restoreCategoryTrash');
+            //---------------------------
+            Route::get('allproduct','ProductController@index')->name('allproduct');
+            Route::get('addproduct','ProductController@addproduct')->name('addproduct');
+            Route::get('trashproduct','ProductController@trashproduct')->name('trashproduct');
+            Route::post('storeProduct','ProductController@storeproduct')->name('storeProduct');
+            // Route::resource('product', 'ProductController');
+            Route::resource('category', 'CategoryController');
 
         });
 

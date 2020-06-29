@@ -10,7 +10,7 @@
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 ">
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center border-bottom mb-3">
                 <h1 class="h2">Dashboard</h1>
-                <div class="btn-toolbar mb-2 mb-md-0">
+                {{-- <div class="btn-toolbar mb-2 mb-md-0">
                     <div class="btn-group mr-2">
                         <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
                         <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
@@ -20,7 +20,7 @@
                         This week
                     </button>
                     <a class="btn btn-primary" href="{{ url('admin/categorybtn') }}" role="button">Add Categories</a>
-                </div>
+                </div> --}}
             </div>
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
@@ -66,10 +66,13 @@
                             </td>
                             <td>{{ $c->created_at }}</td>
                             <td>
-                                <a class="btn btn-info btn-sm" href="{{ route('category.edit',$c->id) }}">Edit</a> | <a class="btn btn-danger btn-sm" href="#" onclick="confirmdelete('{{ $c->id }}')">Delete</a>
+                                <a class="btn btn-info btn-sm" href="{{ route('category.edit',$c->id) }}">Edit</a> | <a class="btn btn-warning btn-sm" href="#" onclick="trashdelete('{{ $c->id }}')">Trash</a> | <a class="btn btn-danger btn-sm" href="#" onclick="confirmdelete('{{ $c->id }}')">Delete</a>
                                 <form method="POST" id="deletecat-{{ $c->id }}" action="{{ route('category.destroy',$c->id) }}">
                                     @method('delete')
                                     @csrf
+                                </form>
+                                <form method="POST" id="trashcat-{{ $c->id }}" action="{{ route('trash',$c->id) }}">
+                                    {{ csrf_field() }}
                                 </form>
                             </td>
                         </tr>
@@ -91,7 +94,14 @@
     {
         var choice = confirm("Are you sure you want to delete");
         if(choice){
-            document.getElementById('deletecat-'+id).submit();
+                document.getElementById('deletecat-'+id).submit();
+        }
+    }
+    function trashdelete(id)
+    {
+        var choice = confirm("Are you sure you want to delete");
+        if(choice){
+                document.getElementById('trashcat-'+id).submit();
         }
     }
 </script>

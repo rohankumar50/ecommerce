@@ -15,8 +15,8 @@ class CreateCategoryParentTable extends Migration
     {
         Schema::create('category_parent', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('parent_id');
-            $table->unsignedInteger('category_id');
+            $table->unsignedInteger('parent_id')->default(0);
+            $table->unsignedInteger('category_id')->default(0);
             $table->timestamps();
         });
     }

@@ -9,18 +9,7 @@
     <div class="row">
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 ">
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center border-bottom mb-3">
-                <h1 class="h2">Dashboard</h1>
-                {{-- <div class="btn-toolbar mb-2 mb-md-0">
-                    <div class="btn-group mr-2">
-                        <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
-                        <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
-                    </div>
-                    <button type="button" class="btn btn-sm btn-outline-secondary mr-2">
-                        <span data-feather="calendar"></span>
-                        This week
-                    </button>
-                    <a class="btn btn-primary" href="{{ url('admin/categorybtn') }}" role="button">Add Categories</a>
-                </div> --}}
+                <h1 class="h2">Trash</h1>
             </div>
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
@@ -43,10 +32,6 @@
                             <th>Title</th>
                             <th>Description</th>
                             <th>Slug</th>
-                            <th>Price</th>
-                            <th>Discount</th>
-                            <th>Featured</th>
-                            <th>Thumbnail</th>
                             <th>Categories</th>
                             <th>Date Created</th>
                             <th>Actions</th>
@@ -59,13 +44,9 @@
                             <td>{{ $c->title }}</td>
                             <td>{{ $c->description }}</td>
                             <td>{{ $c->slug }}</td>
-                            <td>{{ $c->price }}</td>
-                            <td>{{ $c->discount }}</td>
-                            <td>{{ $c->featured }}</td>
-                            <td><img src="{{ url($c->thumbnail) }}" width="100"></td>
                             <td>
-                                @if($c->category())
-                                    @foreach ($c->category as $child)
+                                @if($c->children())
+                                    @foreach ($c->children as $child)
                                         {{ $child->title }},
                                     @endforeach
                                 @else
@@ -74,12 +55,12 @@
                             </td>
                             <td>{{ $c->created_at }}</td>
                             <td>
-                                <a class="btn btn-info btn-sm" href="{{ route('category.edit',$c->id) }}">Edit</a> | <a class="btn btn-warning btn-sm" href="#" onclick="trashdelete('{{ $c->id }}')">Trash</a> | <a class="btn btn-danger btn-sm" href="#" onclick="confirmdelete('{{ $c->id }}')">Delete</a>
+                                <a class="btn btn-warning btn-sm" href="#" onclick="trashdelete('{{ $c->id }}')">Restore</a> | <a class="btn btn-danger btn-sm" href="#" onclick="confirmdelete('{{ $c->id }}')">Permanent Delete</a>
                                 <form method="POST" id="deletecat-{{ $c->id }}" action="{{ route('category.destroy',$c->id) }}">
                                     @method('delete')
                                     @csrf
                                 </form>
-                                <form method="POST" id="trashcat-{{ $c->id }}" action="{{ route('trash',$c->id) }}">
+                                <form method="POST" id="restore-{{ $c->id }}" action="{{ route('restoreCategoryTrash',$c->id) }}">
                                     {{ csrf_field() }}
                                 </form>
                             </td>
@@ -100,16 +81,16 @@
 <script>
     function confirmdelete(id)
     {
-        var choice = confirm("Are you sure you want to delete");
+        var choice = confirm("Are you sure you want to parmanent delete");
         if(choice){
                 document.getElementById('deletecat-'+id).submit();
         }
     }
     function trashdelete(id)
     {
-        var choice = confirm("Are you sure you want to delete");
+        var choice = confirm("Are you sure you want to restore");
         if(choice){
-                document.getElementById('trashcat-'+id).submit();
+                document.getElementById('restore-'+id).submit();
         }
     }
 </script>

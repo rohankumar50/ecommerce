@@ -47,7 +47,7 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title'=>'required',
+            'title'=>'required|unique:categories,title',
             'description'=>'required'
         ]);
         $category = new Category;
@@ -104,6 +104,33 @@ class CategoryController extends Controller
         return back()->with('success','data updated');
     }
 
+    public function categoryTrash()
+    {
+        $cat = Category::onlyTrashed()->paginate(5);
+        return view('admin/categories/categoryTrash',['cat'=>$cat]);
+    }
+
+    public function trash(Category $category)
+    {
+        if($category->delete()){
+            return back()->with('success','data deleted');
+        }
+        else{
+            return back()->with('success','data not deleted');
+        }
+    }
+
+    public function restore($id){
+        $cat=Category::onlyTrashed()->findOrFail($id);
+        if($cat->restore()){
+            return back()->with("success","Data successfully restored");
+        }
+        else{
+            return back()->with("success","Data not restored");
+        }
+    }
+
+
     /**
      * Remove the specified resource from storage.
      *
@@ -112,14 +139,12 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        $category->delete();
-        return back()->with('success','data deleted');
-        //
-        // if($category->delete()){
-        //     return back()->with('success','data deleted');
-        // }
-        // else
-        //     return back()->with('success','data not deleted');
-
+        if($category->forceDelete()){
+            return back()->with('success','data deleted');
+        }
+        else{
+            return back()->with('success','data not deleted');
+        }
     }
+
 }

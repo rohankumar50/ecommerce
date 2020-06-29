@@ -12,18 +12,32 @@
                     Orders
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link {{ Request::is("admin/product") ? 'active' : '' }}" href="{{ url('admin/product') }}">
-                    <span data-feather="shopping-cart"></span>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle {{ Request::is("admin/allproduct") ? 'active' : '' }}" href="{{ route('allproduct') }}" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Products
                 </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" href="{{ route('allproduct') }}">All Product</a>
+                    <a class="dropdown-item" href="{{ route('addproduct') }}">Add Product</a>
+                    <a class="dropdown-item" href="{{ route('trashproduct') }}">Trash Product</a>
+                  </div>
             </li>
-            <li class="nav-item">
+            {{-- <li class="nav-item">
                 <a class="nav-link {{ Request::is("admin/category") ? 'active' : '' }}" href="{{ url('admin/category') }}">
                     <span data-feather="bar-chart-2"></span>
                     Categories
                 </a>
-            </li>
+            </li> --}}
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle {{ Request::is("admin/category") ? 'active' : '' }}" href="{{ url('admin/category') }}" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Categories
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                  <a class="dropdown-item" href="{{ url('admin/categorybtn') }}">Add Categories</a>
+                  <a class="dropdown-item" href="{{ url('admin/category') }}">All Category</a>
+                  <a class="dropdown-item" href="{{ route('categoryTrash') }}">Trash Category</a>
+                </div>
+              </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">
                     <span data-feather="users"></span>

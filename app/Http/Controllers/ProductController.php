@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
 use App\Product;
 use Illuminate\Http\Request;
 
@@ -14,10 +15,53 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
-        return view('admin\products\index');
+        $cat = Product::paginate(5);
+        return view('admin\products\index',['cat'=>$cat]);
     }
 
+    public function addproduct()
+    {
+        $categories=Category::all();
+        return view('admin\products\addproduct',compact('categories'));
+    }
+
+    public function trashproduct()
+    {
+        //
+        return view('admin\products\trashproduct');
+    }
+
+    public function storeProduct(Request $request)
+    {
+            $request->validate([
+                'title'=>'required|unique:products,title',
+                'slug'=>'required',
+                'description'=>'required',
+                'price'=>'required',
+                'discount'=>'required',
+                'thumbnail'=>'required',
+            ]);
+            $product=new Product;
+            $product->title=$request->title;
+            $product->slug=$request->slug;
+            $product->description=$request->description;
+            $product->price=$request->price;
+            $product->discount=$request->discount;
+            $product->status=$request->status;
+            $name=basename($request->thumbnail->getClientOriginalName(),$request->thumbnail->getClientOriginalExtension()).$request->thumbnail->getClientOriginalExtension();
+            $product->thumbnail=$request->thumbnail->move('images',$name);
+            $featured=$request->featured;
+            if($featured=="on")
+            {
+                $product->featured=1;
+            }
+            else{
+                $product->featured=0;
+            }
+            $product->save();
+            $product->category()->attach($request->category_id);
+            return redirect('admin/allproduct')->with('success');
+    }
     /**
      * Show the form for creating a new resource.
      *

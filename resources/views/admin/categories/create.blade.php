@@ -42,6 +42,7 @@
             <div class="form-group">
                 <label for="exampleFormControlTextarea1">Select Category</label>
                 <select class="js-example-basic-multiple container-fluid" name="parent_id[]" id="parent_id" multiple="multiple">
+                    <option value="">Parent</option>
                     @foreach ($data as $d)
                         <option value="{{ $d->id }}">{{ $d->title }}</option>
                     @endforeach
