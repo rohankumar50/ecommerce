@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Profile;
 use Illuminate\Http\Request;
+use App\User;
 
 class ProfileController extends Controller
 {
@@ -14,7 +15,8 @@ class ProfileController extends Controller
      */
     public function index()
     {
-        //
+        $cat = User::all();
+        return view('admin\customers\allusers',['cat'=>$cat]);
     }
 
     /**

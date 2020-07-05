@@ -9,33 +9,31 @@
     <div class="row">
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 ">
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center border-bottom mb-3">
-                <h1 class="h2">Trash</h1>
+                <h1 class="h2">Dashboard</h1>
             </div>
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{ url('admin') }}">Dashboard</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Categories</li>
+                    <li class="breadcrumb-item active" aria-current="page">Usersli>
                 </ol>
             </nav>
             @if (Session::has('success'))
             <div class="alert alert-danger">
                 <ul>
-                    {{ session('success',$errors->all()) }}
+                    {{ session('success') }}
                 </ul>
             </div>
             @endif
             <div class="table-responsive">
                 <table class="table table-striped table-sm table-bordered overflow-hidden">
                     <thead>
-                        <tr> <th>#</th>
-                            <th>Title</th>
-                            <th>Description</th>
-                            <th>Slug</th>
-                            <th>Price</th>
-                            <th>Discount</th>
-                            <th>Featured</th>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Address</th>
                             <th>Thumbnail</th>
-                            <th>Categories</th>
                             <th>Date Created</th>
                             <th>Actions</th>
                         </tr>
@@ -44,29 +42,19 @@
                     <tbody>
                         <tr>
                             <td>{{ $c->id }}</td>
-                            <td>{{ $c->title }}</td>
-                            <td>{{ $c->description }}</td>
-                            <td>{{ $c->slug }}</td>
-                            <td>{{ $c->price }}</td>
-                            <td>{{ $c->discount }}</td>
-                            <td>{{ $c->featured }}</td>
-                            <td><img src="{{ url($c->thumbnail) }}" width="100"></td>
-                            <td>
-                                @if($c->category())
-                                    @foreach ($c->category as $child)
-                                        {{ $child->title }},
-                                    @endforeach
-                                @else
-                                    <strong>{{ "Parent" }}</strong>
-                                @endif
-                            </td>
+                            <td>{{ $c->profile->name }}</td>
+                            <td>{{ $c->email }}</td>
+                            <td>{{ $c->role_id }}</td>
+                            <td>{{ $c->profile->address }}</td>
+                            <td>{{ $c->profile->thumbnail }}</td>
                             <td>{{ $c->created_at }}</td>
                             <td>
-                                <a class="btn btn-warning btn-sm" href="#" onclick="restore('{{ $c->id }}')">Restore</a> | <a class="btn btn-danger btn-sm" href="#" onclick="confirmdelete('{{ $c->id }}')">Permanent Delete</a>
-                                <form method="get" id="deletecat-{{ $c->id }}" action="{{ route('btn_delete',$c->id) }}">
+                                <a class="btn btn-info btn-sm" href="{{ route('category.edit',$c->id) }}">Edit</a> | <a class="btn btn-warning btn-sm" href="#" onclick="trashdelete('{{ $c->id }}')">Trash</a> | <a class="btn btn-danger btn-sm" href="#" onclick="confirmdelete('{{ $c->id }}')">Delete</a>
+                                <form method="POST" id="deletecat-{{ $c->id }}" action="{{ route('category.destroy',$c->id) }}">
+                                    @method('delete')
                                     @csrf
                                 </form>
-                                <form method="get" id="restore-{{ $c->id }}" action="{{ route('btn_restore',$c->id) }}">
+                                <form method="POST" id="trashcat-{{ $c->id }}" action="{{ route('trash',$c->id) }}">
                                     {{ csrf_field() }}
                                 </form>
                             </td>
@@ -76,7 +64,7 @@
                 </table>
                 <div class="row">
                     <div class="col-md-9">
-                        {{ $cat->links() }}
+                        {{-- {{ $cat->links() }} --}}
                     </div>
                 </div>
             </div>
@@ -87,18 +75,20 @@
 <script>
     function confirmdelete(id)
     {
-        var choice = confirm("Are you sure you want to parmanent delete");
+        var choice = confirm("Are you sure you want to delete");
         if(choice){
                 document.getElementById('deletecat-'+id).submit();
         }
     }
-    function restore(id)
+    function trashdelete(id)
     {
-        var choice = confirm("Are you sure you want to restore");
+        var choice = confirm("Are you sure you want to delete");
         if(choice){
-                document.getElementById('restore-'+id).submit();
+                document.getElementById('trashcat-'+id).submit();
         }
     }
 </script>
 
 @endsection
+
+

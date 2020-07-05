@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Category;
 use App\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 class ProductController extends Controller
 {
@@ -27,9 +29,40 @@ class ProductController extends Controller
 
     public function trashproduct()
     {
-        //
-        return view('admin\products\trashproduct');
+        $cat = Product::onlyTrashed()->paginate(5);
+        return view('admin\products\trashproduct',['cat'=>$cat]);
     }
+    public function btn_restore($id)
+    {
+        if(Product::withTrashed()->find($id)->restore()){
+            return back()->with('success','data restored');
+        }
+        else{
+            return back()->with('success','data not restored');
+        }
+    }
+    public function btn_trashproduct($id)
+    {
+        if(Product::find($id)->delete()){
+            return back()->with('success','data deleted');
+        }
+        else{
+            return back()->with('success','data not deleted');
+        }
+    }
+    public function btn_delete($id)
+    {
+        $data=Product::withTrashed()->find($id);
+        if(Product::withTrashed()->find($id)->forcedelete()){
+            File::delete($data->thumbnail);
+            return back()->with('success','data deleted');
+        }
+        else{
+            return back()->with('success','data not deleted');
+        }    
+    }
+
+    
 
     public function storeProduct(Request $request)
     {

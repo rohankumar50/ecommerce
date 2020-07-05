@@ -16,13 +16,10 @@ class RegisterController extends Controller
             'password'=>'required|min:8',
             'confirm_password'=>'required|same:password',
         ]);
-
         $user=new User;
         $user->email=request('email');
         $user->password=Crypt::encrypt($request->password);
         $user->save();
         return redirect('http://localhost/myecommerce/public/');
-
-
     }
 }

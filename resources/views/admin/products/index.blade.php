@@ -74,12 +74,11 @@
                             </td>
                             <td>{{ $c->created_at }}</td>
                             <td>
-                                <a class="btn btn-info btn-sm" href="{{ route('category.edit',$c->id) }}">Edit</a> | <a class="btn btn-warning btn-sm" href="#" onclick="trashdelete('{{ $c->id }}')">Trash</a> | <a class="btn btn-danger btn-sm" href="#" onclick="confirmdelete('{{ $c->id }}')">Delete</a>
-                                <form method="POST" id="deletecat-{{ $c->id }}" action="{{ route('category.destroy',$c->id) }}">
-                                    @method('delete')
+                                <a class="btn btn-info btn-sm" href="{{ route('category.edit',$c->id) }}">Edit</a> | <a class="btn btn-warning btn-sm" href="#" onclick="trashdelete('{{ $c->id }}')">Trash</a>
+                                <form method="POST" id="deletecat-{{ $c->id }}" action="{{ route('btn_trashproduct',$c->id) }}">
                                     @csrf
                                 </form>
-                                <form method="POST" id="trashcat-{{ $c->id }}" action="{{ route('trash',$c->id) }}">
+                                <form method="get" id="trashcat-{{ $c->id }}" action="{{ route('btn_trashproduct',$c->id) }}">
                                     {{ csrf_field() }}
                                 </form>
                             </td>
@@ -98,13 +97,6 @@
 </div>
 
 <script>
-    function confirmdelete(id)
-    {
-        var choice = confirm("Are you sure you want to delete");
-        if(choice){
-                document.getElementById('deletecat-'+id).submit();
-        }
-    }
     function trashdelete(id)
     {
         var choice = confirm("Are you sure you want to delete");

@@ -20,6 +20,7 @@ class LoginController extends Controller
             if(Crypt::decrypt($data[0]->password)==$request->password)
             {
                 $request->session()->put('user',$request->email);
+                $request->session()->put('id',$data[0]->role_id);
                 return redirect('admin');
             }
             else
