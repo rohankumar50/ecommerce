@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Product;
+use Session;
+use App\Cart;
 
 class WelcomeController extends Controller
 {
     public function index()
-    {
+    {   
         $product=Product::all();
         return view('welcome',compact('product'));
     }
@@ -17,5 +19,15 @@ class WelcomeController extends Controller
     {
         $product=Product::find($id);
         return view('webpage.product',compact('product'));
+    }
+
+    public function cart(Product $product, Request $request){
+        $oldCart=Session::has('cart')?Session::get('cart'):null;
+        $qty=$request->qty?$request->qty:1;
+        $cart=new Cart($oldCart);
+        $cart->addProduct($product,$qty);
+        Session::put('cart',$cart);
+        return back()->with('message','product '.$product->title.' has been successfully added to cart');
+
     }
 }

@@ -11,7 +11,6 @@
 <main role="main">
   <section class="jumbotron text-center">
     <div class="container">
-
       <h1>Album example</h1>
       <p class="lead text-muted">Something short and leading about the collection below—its contents, the creator, etc. Make it short and sweet, but not too short so folks don’t simply skip over it entirely.</p>
       <p>
@@ -20,6 +19,9 @@
       </p>
     </div>
   </section>
+  @if(session()->has('message'))
+      <p class="alert alert-success">{{ session()->get('message') }}</p>
+    @endif
   <div class="album py-5 bg-light">
     <div class="container">
       <div class="row">
@@ -33,7 +35,7 @@
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
                   <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ url('product/'.$product->id).'/'.$product->slug }}">View Product</a>
-                  <a type="button" class="btn btn-sm btn-outline-secondary">Add to cart</a>
+                  <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ route('cart',$product) }}">Add to cart</a>
                 </div>
                 <small class="text-muted">9 mins</small>
               </div>

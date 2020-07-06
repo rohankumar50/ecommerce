@@ -8,6 +8,7 @@ Route::group(['middleware'=>['customAuth']], function(){
 
         Route::get('/', 'WelcomeController@index');
         Route::get('product/{product}/{slug}','WelcomeController@singleproduct');
+        Route::get('addToCart/{product}','WelcomeController@cart')->name('cart');
 
         Route::get('signout', function (Request $request) {
                 $request->session()->flush();
@@ -20,7 +21,6 @@ Route::group(['middleware'=>['customAuth']], function(){
         //register route---------
         Route::view('register', 'auth/register');
         Route::post('registerController', 'Auth\RegisterController@index')->name('register');
-        
 
         Route::group(['middleware' =>['adminmiddle']], function () {
 
