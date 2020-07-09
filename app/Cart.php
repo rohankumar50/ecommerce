@@ -10,7 +10,7 @@ class Cart
 
     public function __construct($oldCart){
         if($oldCart){
-            $this->content=$oldCart->contents;
+            $this->contents=$oldCart->contents;
             $this->totalQty=$oldCart->totalQty;
             $this->totalPrice=$oldCart->totalPrice;
         }
@@ -27,9 +27,17 @@ class Cart
         $products['qty']+=$qty;
         $products['price']=$product->price*$products['qty'];
         $this->contents[$product->slug]=$products;
-        $this->totalQty+=$products['qty'];
-        $this->totalPrice+=$products['price'];
-
+        $this->totalQty+=$qty;
+        $this->totalPrice+=$product->price;
     }
 
+    public function getContent(){
+        return $this->contents;
+    }
+    public function gettotalQty(){
+        return $this->totalQty;
+    }
+    public function gettotalPrice(){
+        return $this->totalPrice;
+    }
 }

@@ -8,7 +8,8 @@ Route::group(['middleware'=>['customAuth']], function(){
 
         Route::get('/', 'WelcomeController@index');
         Route::get('product/{product}/{slug}','WelcomeController@singleproduct');
-        Route::get('addToCart/{product}','WelcomeController@cart')->name('cart');
+        Route::get('addToCart/{product}','WelcomeController@addtocart')->name('addtocart');
+        Route::get('cart','WelcomeController@cart')->name('cart');
 
         Route::get('signout', function (Request $request) {
                 $request->session()->flush();

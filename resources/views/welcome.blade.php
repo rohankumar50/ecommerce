@@ -27,15 +27,15 @@
       <div class="row">
       @foreach($product as $product)
         <div class="col-md-4">
-          <div class="card mb-4 shadow-sm">
+          <div class="card mb-4 shadow-sm" style="width: 20rem;">
             <img class="card-img-top" src="{{ url($product->thumbnail) }}">
             <div class="card-body">
               <h4 class="card-title">{!! $product->title !!}</h4>
-              <p class="card-text">{!! $product->description !!}</p>
+              <p class="card-text">{!! Str::limit($product->description,30) !!}</p>
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
                   <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ url('product/'.$product->id).'/'.$product->slug }}">View Product</a>
-                  <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ route('cart',$product) }}">Add to cart</a>
+                  <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ route('addtocart',$product) }}">Add to cart</a>
                 </div>
                 <small class="text-muted">9 mins</small>
               </div>
